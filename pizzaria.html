@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pizzaria Halloween</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Trebuchet MS', sans-serif;
+      background: #0d0d0d;
+      color: #f5f5f5;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(90deg, #ff6600, #990000);
+      color: #fff;
+      font-size: 2em;
+      text-shadow: 2px 2px 5px black;
+    }
+    .localizacao {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #ffcc00;
+    }
+    .cardapio {
+      max-width: 700px;
+      margin: 40px auto;
+      background: rgba(20,20,20,0.8);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #ff6600;
+    }
+    .cardapio h2 {
+      text-align: center;
+      color: #ffcc00;
+      margin-bottom: 20px;
+    }
+    .pizza {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 15px 0;
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+    .pizza:last-child { border-bottom: none; }
+    .pizza img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin-right: 15px;
+      border-radius: 8px;
+      border: 2px solid #ff6600;
+    }
+    .pizza-info {
+      flex: 1;
+    }
+    .pizza span {
+      color: #ff6600;
+      font-weight: bold;
+      font-size: 1.2em;
+    }
+    .preco {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+    button {
+      background: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover { background: #cc5200; }
+
+    /* Tela de pagamento */
+    .pagamento {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+    }
+    .pagamento form {
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px #ff6600;
+      width: 300px;
+    }
+    .pagamento h3 {
+      text-align: center;
+      margin-bottom: 15px;
+      color: #ffcc00;
+    }
+    .pagamento label {
+      display: block;
+      margin-top: 10px;
+    }
+    .pagamento input, .pagamento select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: none;
+    }
+    .fechar {
+      background: #990000;
+      margin-top: 15px;
+    }
+
+    /* Abóboras animadas */
+    .abobora {
+      position: absolute;
+      font-size: 50px;
+      animation: saltar 5s ease-in-out infinite;
+    }
+    @keyframes saltar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    /* Fantasminhas */
+    .fantasma {
+      position: absolute;
+      font-size: 40px;
+      animation: flutuar 8s ease-in-out infinite;
+    }
+    @keyframes flutuar {
+      0% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(-30px); opacity: 1; }
+      100% { transform: translateY(0); opacity: 0.7; }
+    }
+  </style>
+</head>
+<body>
+  <header>🍕 Pizzaria Halloween 🎃</header>
+  <div class="localizacao">📍 Localização: Arapongas - Paraná</div>
+
+  <div class="cardapio">
+    <h2>Cardápio Especial</h2>
+    <div class="pizza">
+      <img src="Pizza de calabresa.jpg" alt="Calabresa Especial">
+      <div class="pizza-info">
+        <span>Calabresa Especial</span> – molho, queijo, calabresa, cebola roxa<br>
+        <span class="preco">R$ 45,00</span>
+      </div>
+      <button onclick="abrirPagamento('Calabresa Especial')">Comprar</button>
+    </div>
+    <div class="pizza">
+      <img src="Pizza-Quatro-Queijos.jpg" alt="Quatro Queijos Especial">
+      <div class="pizza-info">
+        <span>Quatro Queijos Especial</span> – mussarela, gorgonzola, parmesão, catupiry<br>
+        <span class="preco">R$ 50,00</span>
+      </div>
+      <button onclick="abrirPagamento('Quatro Queijos Especial')">Comprar</button>
+    </div>
+    <div class="pizza">
+      <img src="pizza de frango catupiry.jpg" alt="Frango Catupiry Especial">
+      <div class="pizza-info">
+        <span>Frango Catupiry Especial</span> – frango desfiado, catupiry, milho<br>
+        <span class="preco">R$ 48,00</span>
+      </div>
+      <button onclick="abrirPagamento('Frango Catupiry Especial')">Comprar</button>
+    </div>
+  </div>
+
+  <!-- Tela de pagamento -->
+  <div class="pagamento" id="pagamento">
+    <form>
+      <h3>Finalizar Pedido</h3>
+      <p id="pizzaEscolhida"></p>
+      <label>Endereço:</label>
+      <input type="text" placeholder="Rua, número, bairro">
+      <label>Forma de pagamento:</label>
+      <select>
+        <option>Dinheiro</option>
+        <option>Cartão</option>
+        <option>Pix</option>
+      </select>
+      <button type="submit">Confirmar</button>
+      <button type="button" class="fechar" onclick="fecharPagamento()">Cancelar</button>
+    </form>
+  </div>
+
+  <!-- Abóboras -->
+  <div class="abobora" style="top:10%; left:20%;">🎃</div>
+  <div class="abobora" style="top:60%; left:70%;">🎃</div>
+  <div class="abobora" style="top:30%; left:50%;">🎃</div>
+  <!-- Fantasminhas -->
+  <div class="fantasma" style="top:20%; left:80%;">👻</div>
+  <div class="fantasma" style="top:70%; left:30%;">👻</div>
+
+  <script>
+    function abrirPagamento(pizza) {
+      document.getElementById('pagamento').style.display = 'flex';
+      document.getElementById('pizzaEscolhida').innerText = "Pizza escolhida: " + pizza;
+    }
+    function fecharPagamento() {
+      document.getElementById('pagamento').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
